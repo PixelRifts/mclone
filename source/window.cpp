@@ -29,6 +29,7 @@ namespace Window {
         Input::Init(WindowHandle);
         glfwSetKeyCallback(WindowHandle, Input::KeyCallback);
         glfwSetCursorPosCallback(WindowHandle, Input::CursorPosCallback);
+        glfwSetScrollCallback(WindowHandle, Input::ScrollCallback);
     }
     
     void PollEvents() {

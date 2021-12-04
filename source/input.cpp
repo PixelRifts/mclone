@@ -13,6 +13,10 @@ namespace Input {
     
     float mouse_x;
     float mouse_y;
+    float mouse_scrollx;
+    float mouse_scrolly;
+    float mouse_absscrollx;
+    float mouse_absscrolly;
     
     inline static void SetPressedBit(u32 index)    { key_states[index] |= 0b00000001; }
     inline static void SetReleasedBit(u32 index)   { key_states[index] |= 0b00000010; }
@@ -27,6 +31,8 @@ namespace Input {
     void Reset() {
         // Sizeof u8 just to be explicit
         std::memset(key_states, 0, 350 * sizeof(u8));
+        mouse_scrollx = 0;
+        mouse_scrolly = 0;
     }
     
     void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -54,6 +60,13 @@ namespace Input {
     void CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
         mouse_x = (float)xpos;
         mouse_y = (float)ypos;
+    }
+    
+    void ScrollCallback(GLFWwindow* window, double xscroll, double yscroll) {
+        mouse_scrollx = (float)xscroll;
+        mouse_scrolly = (float)yscroll;
+        mouse_absscrollx += (float)xscroll;
+        mouse_absscrolly += (float)yscroll;
     }
     
     bool Key(i32 key) {

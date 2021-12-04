@@ -18,11 +18,15 @@ namespace Input {
     
     extern float mouse_x;
     extern float mouse_y;
-    
+    extern float mouse_scrollx;
+    extern float mouse_scrolly;
+    extern float mouse_absscrollx;
+    extern float mouse_absscrolly;
     
     void Init(GLFWwindow* window);
     void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+    void ScrollCallback(GLFWwindow* window, double xscroll, double yscroll);
     
     void Reset();
     
@@ -30,9 +34,6 @@ namespace Input {
     bool KeyPressed(i32 key); // Was Key Pressed this Frame
     bool KeyReleased(i32 key); // Was Key Released this Frame
     bool KeyHeld(i32 key); // Is Key Held
-    
-    float MouseX();
-    float MouseY();
 }
 
 #endif //INPUT_H

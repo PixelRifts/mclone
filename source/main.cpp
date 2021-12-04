@@ -1,6 +1,6 @@
-#include <GLFW/glfw3.h>
 #include <iostream>
 
+#include <glad/glad.h>
 #include "window.h"
 
 int main(int argc, char** argv) {

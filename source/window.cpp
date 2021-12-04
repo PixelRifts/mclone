@@ -1,5 +1,5 @@
+#include <glad/glad.h>
 #include "window.h"
-
 
 namespace Window {
     struct WindowParams {
@@ -30,6 +30,9 @@ namespace Window {
         state.Height = height;
         state.WindowTitle = title;
         state.IsFullscreen = false;
+        
+        glfwMakeContextCurrent(state.Handle);
+        gladLoadGL();
         
         Input::Init(state.Handle);
         glfwSetKeyCallback(state.Handle, Input::KeyCallback);

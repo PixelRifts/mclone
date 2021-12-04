@@ -1,13 +1,18 @@
 #include "window.h"
 
+
 namespace Window {
-    i32 Width;
-    i32 Height;
-    bool IsFullscreen;
-    std::string Title;
+    struct WindowParams {
+        GLFWwindow* Handle;
+        GLFWmonitor* Monitor;
+        
+        i32 Width;
+        i32 Height;
+        bool IsFullscreen;
+        std::string WindowTitle;
+    };
     
-    GLFWwindow* WindowHandle;
-    GLFWmonitor* Monitor;
+    static WindowParams state;
     
     i32 cached_x, cached_y;
     i32 cached_w, cached_h;
@@ -19,17 +24,17 @@ namespace Window {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         
-        Monitor = glfwGetPrimaryMonitor();
-        WindowHandle = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-        Width = width;
-        Height = height;
-        Title = title;
-        IsFullscreen = false;
+        state.Monitor = glfwGetPrimaryMonitor();
+        state.Handle = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+        state.Width = width;
+        state.Height = height;
+        state.WindowTitle = title;
+        state.IsFullscreen = false;
         
-        Input::Init(WindowHandle);
-        glfwSetKeyCallback(WindowHandle, Input::KeyCallback);
-        glfwSetCursorPosCallback(WindowHandle, Input::CursorPosCallback);
-        glfwSetScrollCallback(WindowHandle, Input::ScrollCallback);
+        Input::Init(state.Handle);
+        glfwSetKeyCallback(state.Handle, Input::KeyCallback);
+        glfwSetCursorPosCallback(state.Handle, Input::CursorPosCallback);
+        glfwSetScrollCallback(state.Handle, Input::ScrollCallback);
     }
     
     void PollEvents() {
@@ -37,29 +42,29 @@ namespace Window {
         glfwPollEvents();
     }
     
-    bool IsOpen() { return !glfwWindowShouldClose(WindowHandle); }
-    void SwapBuffers() { glfwSwapBuffers(WindowHandle); }
-    void Close() { glfwSetWindowShouldClose(WindowHandle, true); }
+    bool IsOpen() { return !glfwWindowShouldClose(state.Handle); }
+    void SwapBuffers() { glfwSwapBuffers(state.Handle); }
+    void Close() { glfwSetWindowShouldClose(state.Handle, true); }
     
     void FullscreenSwitch() {
-        if (IsFullscreen) {
-            glfwGetWindowPos(WindowHandle, &cached_x, &cached_y);
-            glfwGetWindowSize(WindowHandle, &cached_w, &cached_h);
+        if (state.IsFullscreen) {
+            glfwGetWindowPos(state.Handle, &cached_x, &cached_y);
+            glfwGetWindowSize(state.Handle, &cached_w, &cached_h);
             
             // get resolution of monitor
-            const GLFWvidmode * mode = glfwGetVideoMode(Monitor);
+            const GLFWvidmode * mode = glfwGetVideoMode(state.Monitor);
             
             // switch to full screen
-            glfwSetWindowMonitor(WindowHandle, Monitor, 0, 0, mode->width, mode->height, 0);
+            glfwSetWindowMonitor(state.Handle, state.Monitor, 0, 0, mode->width, mode->height, 0);
         } else {
-            glfwSetWindowMonitor(WindowHandle, nullptr, cached_x, cached_y, cached_w, cached_h, 0);
+            glfwSetWindowMonitor(state.Handle, nullptr, cached_x, cached_y, cached_w, cached_h, 0);
         }
         
-        IsFullscreen = !IsFullscreen;
+        state.IsFullscreen = !state.IsFullscreen;
     }
     
     void Destroy() {
-        glfwDestroyWindow(WindowHandle);
+        glfwDestroyWindow(state.Handle);
         glfwTerminate();
     }
 }

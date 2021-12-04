@@ -1,6 +1,6 @@
 version(1);
 
-project_name = "Vulkan";
+project_name = "Mclone";
 
 patterns =
 {

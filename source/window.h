@@ -7,11 +7,6 @@
 #include <string>
 
 namespace Window {
-    extern i32 Width;
-    extern i32 Height;
-    extern bool IsFullscreen;
-    extern std::string Title;
-    
     void Init(i32 width, i32 height, std::string title);
     
     void PollEvents();
@@ -21,6 +16,6 @@ namespace Window {
     void Close();
     
     void Destroy();
-};
+}
 
 #endif //WINDOW_H

@@ -8,6 +8,7 @@ patterns =
 	"*.cpp",
 	"*.mdesk",
 	"*.h",
+	"*.hpp",
 	"*.bat",
 	"*.sh",
 	"*.4coder",
